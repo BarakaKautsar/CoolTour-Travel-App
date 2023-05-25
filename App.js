@@ -4,6 +4,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import LandingScreen from './screens/Landing.js';
 import LoginPage from './screens/Login.js';
 import RegisterPage from './screens/Register.js';
@@ -13,6 +14,14 @@ import History from './screens/History.js';
 import Search from './screens/Search.js';
 import Plan from './screens/Plan.js';
 import colors from './assets/colors.js';
+
+import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+Entypo.loadFont();
+AntDesign.loadFont();
+MaterialCommunityIcons.loadFont();
 
 
 const Stack = createNativeStackNavigator();
@@ -50,7 +59,7 @@ const HistoryStack = () => {
 const ProfileStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen options={{ headerShown: false }} name="Profile" component={Profile} />
+      <Stack.Screen options={{ headerShown: false }} name="ProfilePage" component={Profile} />
     </Stack.Navigator>
   );
 }
@@ -63,11 +72,36 @@ const TabNavigator = () => {
         tabBarInactiveTintColor: colors.darkgrey,
         tabBarStyle: styles.TabBar,
       }}>
-      <Tab.Screen options={{ headerShown: false }} name="Home" component={HomeStack} />
-      <Tab.Screen options={{ headerShown: false }} name="Search" component={SearchStack} />
-      <Tab.Screen options={{ headerShown: false }} name="Plan" component={PlanStack} />
-      <Tab.Screen options={{ headerShown: false }} name="History" component={HistoryStack} />
-      <Tab.Screen options={{ headerShown: false }} name="Profile" component={ProfileStack} />
+      <Tab.Screen options={{ 
+        headerShown: false,
+        tabBarIcon: ({color}) => (
+          <Entypo name="home" size={32} color={color} />
+        )
+      }} name="Home" component={HomeStack} />
+      <Tab.Screen options={{ 
+        headerShown: false,
+        tabBarIcon: ({color}) => (
+          <AntDesign name="search1" size={32} color={color} />
+        )
+      }} name="Search" component={SearchStack} />
+      <Tab.Screen options={{ 
+        headerShown: false,
+        tabBarIcon: ({color}) => (
+          <Entypo name="map" size={32} color={color} />
+        )
+      }} name="Plan" component={PlanStack} />
+      <Tab.Screen options={{ 
+        headerShown: false,
+        tabBarIcon: ({color}) => (
+          <MaterialCommunityIcons name="history" size={32} color={color} />
+        )
+      }} name="History" component={HistoryStack} />
+      <Tab.Screen options={{ 
+        headerShown: false,
+        tabBarIcon: ({color}) => (
+          <MaterialCommunityIcons name="account" size={32} color={color} />
+        )
+      }} name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 }
