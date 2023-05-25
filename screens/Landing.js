@@ -1,12 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
-export default function App() {
+
+const Landing = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={require('./../assets/cooltour_logo.png')} />
       <Text>{"\n"}</Text>
       <Text style={styles.BigText}>Welcome to Cooltour!</Text>
+      <TouchableOpacity style={styles.NextButton}>
+        <Text style={styles.buttonText}>Next</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
@@ -24,5 +28,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
-  }
+  },
+  NextButton: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 300,
+    marginTop: 50,
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
 });
+
+export default Landing;

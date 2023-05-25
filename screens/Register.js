@@ -1,11 +1,10 @@
-import { useNavigation } from '@react-navigation/core'
-import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import {auth} from '../database/firebase'
-import {signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {createUserWithEmailAndPassword} from "firebase/auth";
 
-
-const LoginPage = ({ navigation }) => {
+const RegisterPage = ({ navigation }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,30 +18,32 @@ const LoginPage = ({ navigation }) => {
     return unsubscribe
   }, []);
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
+  const handleRegister = () =>{
+    createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
       const user = userCredential.user;
-      // ...
+      console.log('User account created & signed in!')
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
     });
-    console.log('Email:', email);
-  };
-
-  const handleRegister = () => {
-    navigation.navigate('register');
+    // handle registration logic
   };
 
   return (
-    <KeyboardAvoidingView
-      style ={styles.container}
+    <KeyboardAvoidingView 
+      style={styles.container}
       behavior='padding'
-    >
-      <Text style={styles.title}>Login</Text>
+      >
+      <Text style={styles.title}>Register</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
+        autoCapitalize="words"
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -58,15 +59,9 @@ const LoginPage = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Don't have an account?</Text>
-        <TouchableOpacity onPress={handleRegister}>
-          <Text style={styles.footerLink}>Register</Text>
-        </TouchableOpacity>
-      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -106,19 +101,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  footer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  footerText: {
-    fontSize: 16,
-    marginRight: 5,
-  },
-  footerLink: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#1e90ff',
-  },
 });
 
-export default LoginPage;
+export default RegisterPage;
