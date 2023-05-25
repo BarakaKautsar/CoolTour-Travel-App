@@ -1,15 +1,16 @@
-import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Image, FlatList} from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Image, FlatList, RootTagContext} from 'react-native'
 import React, { useEffect, useState } from 'react'
 // imp} from 'react-native-safe-area-context'
 import colors from '../assets/colors.js'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import tiket from '../assets/data/tiket.js';
+import artikel from '../assets/data/artikel.js';
 
 MaterialCommunityIcons.loadFont();
 Entypo.loadFont();
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
 
   const RenderTiket = ({item}) => {
@@ -23,11 +24,26 @@ const Home = () => {
         </View>
         <View style={styles.tiketInfo}>
           <Entypo name="star-outlined" size={24} color={colors.blue} />
-          <Text numberOfLines={1} style={styles.tiketLocation}>{item.reviwes}</Text>
+          <Text numberOfLines={1} style={styles.tiketLocation}>{item.reviwes}/5</Text>
         </View>
       </TouchableOpacity>
     );
     
+  };
+
+  const RenderArtikel = ({item}) => {
+    return(
+      <TouchableOpacity style={styles.artikelContainer}>
+        <Image source={item.image} style={styles.artikelImage} resizeMode='stretch' />
+        <View style={styles.artikelInfo}>
+          <Text style={{color:"black"}}>{item.date}</Text>
+          <Text style={{marginRight: 5}}>{item.publisher}</Text>
+        </View>
+        <Text numberOfLines={1} style={styles.artikelTitle}>{item.title}</Text>
+        <Text numberOfLines={2} style={styles.artikelIsi}>{item.content}</Text>
+      </TouchableOpacity>
+        
+    );
   };
 
 
@@ -45,28 +61,38 @@ const Home = () => {
           />
         </View>
         <View style={styles.pageSections}>
-          <TouchableOpacity style={styles.pages}>
+          <TouchableOpacity style={styles.pages} onPress={()=> navigation.navigate('TicketSearchPage')}>
             <Entypo name="ticket" size={40} color={"white"} />
             <Text style={styles.pageName}>Tiket Wisata</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.pages}>
+          <TouchableOpacity style={styles.pages} onPress={()=> navigation.navigate('TourSearchPage')}>
             <Entypo name="suitcase" size={40} color={"white"} />
             <Text style={styles.pageName}>Paket Tour</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.pages}>
+          <TouchableOpacity style={styles.pages} onPress={()=> navigation.navigate('StaySearchPage')}>
             <Entypo name="home" size={40} color={"white"} />
             <Text style={styles.pageName}>Penginapan</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.MediumText}>Rekomendasi Wisata</Text>
+        <View style={{height: 220}}>
         <FlatList
           data={tiket}
           renderItem={RenderTiket}
           keyExtractor={(item) => item.id}
           horizontal={true}
-          style={{backgroundColor: "red", height: 200}}
+          style={styles.tiketList}
         />
+        </View>
         <Text style={styles.MediumText}>Ayo Jelajah Wisata Budaya!</Text>
+        <View style={{height: 220}}>
+        <FlatList
+          data={artikel}
+          renderItem={RenderArtikel}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+        ></FlatList>
+        </View>
       </View>
     </ScrollView>
   )
@@ -130,6 +156,8 @@ tiketContainer: {
   height: 200,
   borderRadius: 20,
   margin: 10,
+  shadowColor: "#000",
+  shadowOffset: {height: 2, width: 2},
 },
 tiketImage: {
   height: 100,
@@ -153,5 +181,38 @@ tiketInfo:{
 tiketLocation: {
   flex:1
 },
-
+tiketList: {
+  backgroundColor: "white",
+},
+artikelContainer:{
+  backgroundColor: colors.lightgrey,
+  width: 300,
+  height: 200,
+  borderRadius: 20,
+  flexDirection: 'column',
+  margin: 10,
+},
+artikelInfo:{
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  padding: 5,
+},
+artikelTitle:{
+  padding: 5,
+  fontSize: 15,
+  fontWeight: 'bold',
+},
+artikelIsi:{
+  flexDirection: 'row',
+  padding: 5,
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
+},
+artikelImage:{
+  borderTopLeftRadius: 20,
+  borderTopRightRadius: 20,
+  width: 300,
+  height: 80,
+  alignSelf: 'flex-end',
+},
 })

@@ -8,7 +8,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LandingScreen from './screens/Landing.js';
 import LoginPage from './screens/Login.js';
 import RegisterPage from './screens/Register.js';
+
 import Home from './screens/Home.js';
+import TicketSearch from './screens/TicketSearch.js';
+import TourSearch from './screens/TourSearch.js';
+import StaySearch from './screens/StaySearch.js';
+
 import Profile from './screens/Profile.js';
 import History from './screens/History.js';
 import Search from './screens/Search.js';
@@ -31,6 +36,9 @@ const HomeStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="HomePage" component={Home} />
+      <Stack.Screen options={{ headerShown: false }} name="TicketSearchPage" component={TicketSearch} />
+      <Stack.Screen options={{ headerShown: false }} name="TourSearchPage" component={TourSearch} />
+      <Stack.Screen options={{ headerShown: false }} name="StaySearchPage" component={StaySearch} />
     </Stack.Navigator>
   );
 }
