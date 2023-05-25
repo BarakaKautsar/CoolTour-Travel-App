@@ -6,7 +6,18 @@ const stays = [
         reviwes: 4.5,
         price: 200000,
         status: 'Tersedia',
-        description: 'stays masuk wisata Candi Prambanan ini dapat digunakan sebagai akses masuk kompleks Candi Prambanan dan Candi-Candi di sekitarnya.'
+        description: 'Homestay ini dekat dengan pintu masuk wisata Candi Prambanan dan Candi-Candi di sekitarnya.',
+        image: require('../images/desoku.png')
+    },
+    {
+        id: 2,
+        name: 'SundaVillage Homestay',
+        location: 'Jl. Tamansari 10, Coblong, Bandung, Jawa Barat',
+        reviwes: 4.8,
+        price: 150000,
+        status: 'Tersedia',
+        description: 'sHomestay ini dekat dengan pintu masuk Kampus ITB Ganesha dan kampus - kampus universitas lain di sekitarnya.',
+        image: require('../images/sundavillage.png')
     }
 ]
 
