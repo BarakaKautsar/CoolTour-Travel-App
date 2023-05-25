@@ -16,7 +16,7 @@ import StaySearch from './screens/StaySearch.js';
 
 import Profile from './screens/Profile.js';
 import History from './screens/History.js';
-import Search from './screens/Search.js';
+import Explore from './screens/Explore.js';
 import Plan from './screens/Plan.js';
 import colors from './assets/colors.js';
 
@@ -46,7 +46,7 @@ const HomeStack = () => {
 const SearchStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen options={{ headerShown: false }} name="SearchPage" component={Search} />
+      <Stack.Screen options={{ headerShown: false }} name="ExplorePage" component={Explore} />
     </Stack.Navigator>
   );
 }
@@ -91,7 +91,7 @@ const TabNavigator = () => {
         tabBarIcon: ({color}) => (
           <AntDesign name="search1" size={32} color={color} />
         )
-      }} name="Search" component={SearchStack} />
+      }} name="Explore" component={SearchStack} />
       <Tab.Screen options={{ 
         headerShown: false,
         tabBarIcon: ({color}) => (
