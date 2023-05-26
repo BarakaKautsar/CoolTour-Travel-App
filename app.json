@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PPAM",
-    "slug": "PPAM",
+    "name": "CoolTour",
+    "slug": "CoolTour",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.barakakautsar.CoolTour"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6923068f-794b-4b42-80ab-7faaa541599e"
+      }
     }
   }
 }
