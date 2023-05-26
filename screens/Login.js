@@ -1,37 +1,39 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from 'react-native'
 import {auth} from '../database/firebase'
 import {signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import colors from '../assets/colors';
+
 
 
 const LoginPage = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [value, setValue] = useState({
+    email: "",
+    password: "",
+    error: "",
+  });
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      if (user) {
-        navigation.navigate('landing')
-      }
-    })
+  async function handleLogin() {
+    if (value.email === "" || value.password === "") {
+      setValue({
+        ...value,
+        error: "Email and password are mandatory.",
+      });
+      return;
+    }
 
-    return unsubscribe
-  }, []);
-
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
-    console.log('Email:', email);
-  };
+    try {
+      await signInWithEmailAndPassword(auth, value.email, value.password);
+    } 
+    catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      });
+      console.log(error.message);
+    }
+  }
 
   const handleRegister = () => {
     navigation.navigate('register');
@@ -42,29 +44,32 @@ const LoginPage = ({ navigation }) => {
       style ={styles.container}
       behavior='padding'
     >
-      <Text style={styles.title}>Login</Text>
+      <Image source={require('./../assets/images/login.png')} style={{flexDirection: 'row',marginBottom:20,
+      width: 300,
+      resizeMode: 'stretch'}}></Image>
+      <Text style={styles.title}>Masuk</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
+        value={value.email}
+        onChangeText={(text) => setValue({ ...value, email: text })}
         keyboardType="email-address"
         autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
+        value={value.password}
+        onChangeText={(text) => setValue({ ...value, password: text })}
         secureTextEntry
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Don't have an account?</Text>
+        <Text style={styles.footerText}>Belum Punya Akun?</Text>
         <TouchableOpacity onPress={handleRegister}>
-          <Text style={styles.footerLink}>Register</Text>
+          <Text style={styles.footerLink}>Daftar</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -75,14 +80,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
     backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: colors.blue
   },
   input: {
     borderWidth: 1,
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    backgroundColor: '#1e90ff',
+    backgroundColor: colors.blue,
     padding: 10,
     borderRadius: 4,
     alignItems: 'center',
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
   footerLink: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#1e90ff',
+    color: colors.blue,
   },
 });
 

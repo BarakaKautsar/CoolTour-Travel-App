@@ -8,10 +8,10 @@ const Landing = ({ navigation }) => {
       <Image source={require('./../assets/cooltour_logo.png')} />
       <Text>{"\n"}</Text>
       <Text style={styles.BigText}>Welcome to Cooltour!</Text>
-      <TouchableOpacity style={styles.NextButton}>
+      <TouchableOpacity style={styles.NextButton} onPress={()=> navigation.navigate("Login")}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
     </View>
   );
 }

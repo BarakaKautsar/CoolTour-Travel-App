@@ -1,67 +1,103 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import {auth} from '../database/firebase'
 import {createUserWithEmailAndPassword} from "firebase/auth";
+import colors from '../assets/colors';
 
 const RegisterPage = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [phoneNum, setPhoneNum] = useState('');
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      if (user) {
-        navigation.navigate('landing')
-      }
-    })
+  const [value, setValue] = React.useState({
+    name: '',
+    email: '',
+    password: '',
+    phoneNum: '',
+    error: ''
+  })
 
-    return unsubscribe
-  }, []);
+  // const handleRegister = () =>{
+  //   createUserWithEmailAndPassword(auth, email, password)
+  //   .then((userCredential) => {
+  //     const user = userCredential.user;
+  //     console.log('User account created & signed in!')
+  //   })
+  //   .catch((error) => {
+  //     const errorCode = error.code;
+  //     const errorMessage = error.message;
+  //   });
+  //   // handle registration logic
+  // };
 
-  const handleRegister = () =>{
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log('User account created & signed in!')
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
-    // handle registration logic
-  };
+  async function handleRegister() {
+    if (value.email === '' || value.password === '') {
+      setValue({
+        ...value,
+        error: 'Email and password are mandatory.'
+      })
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, value.email, value.password);
+      navigation.navigate('Login');
+    } catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      })
+    }
+  }
 
   return (
     <KeyboardAvoidingView 
       style={styles.container}
       behavior='padding'
       >
+      <Image source={require('./../assets/images/register.png')} style={{flexDirection: 'row',marginBottom:20,
+      width: 350,
+      resizeMode: 'stretch'}}></Image>
       <Text style={styles.title}>Register</Text>
       <TextInput
         style={styles.input}
         placeholder="Name"
-        value={name}
-        onChangeText={setName}
+        value={value.name}
+        onChangeText={(text) => setValue({ ...value, name: text })}
         autoCapitalize="words"
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
+        value={value.email}
+        onChangeText={(text) => setValue({ ...value, email: text })}
         keyboardType="email-address"
         autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
+        value={value.password}
+        onChangeText={(text) => setValue({ ...value, password: text })}
         secureTextEntry
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Phone Number"
+        value={value.phoneNum}
+        onChangeText={(text) => setValue({ ...value, phoneNum: text })}
+        keyboardType="phone-pad"
       />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Sudah Punya Akun?</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
+          <Text style={styles.footerLink}>Masuk</Text>
+        </TouchableOpacity>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -70,7 +106,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
     backgroundColor: '#fff',
   },
@@ -88,7 +123,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    backgroundColor: '#1e90ff',
+    backgroundColor: colors.blue,
     padding: 10,
     borderRadius: 4,
     alignItems: 'center',
@@ -100,6 +135,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  footer: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  footerText: {
+    fontSize: 16,
+    marginRight: 5,
+  },
+  footerLink: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colors.blue,
   },
 });
 

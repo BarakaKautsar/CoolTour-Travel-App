@@ -1,9 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {auth} from './database/firebase';
+import {onAuthStateChanged } from "firebase/auth";
+import { useAuth } from './hooks/useAuth';
 
 import LandingScreen from './screens/Landing.js';
 import LoginPage from './screens/Login.js';
@@ -14,9 +17,14 @@ import TicketSearch from './screens/TicketSearch.js';
 import TourSearch from './screens/TourSearch.js';
 import StaySearch from './screens/StaySearch.js';
 
-import Profile from './screens/Profile.js';
-import History from './screens/History.js';
 import Explore from './screens/Explore.js';
+import Article from './screens/Article.js';
+
+import Profile from './screens/Profile.js';
+import EditProfile from './screens/EditProfile.js';
+
+import History from './screens/History.js';
+
 import Plan from './screens/Plan.js';
 import colors from './assets/colors.js';
 
@@ -32,6 +40,18 @@ MaterialCommunityIcons.loadFont();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const AuthStack = () => {
+  return (
+    <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen options={{ headerShown: false }} name="landing" component={LandingScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginPage} />
+      <Stack.Screen options={{ headerShown: false }} name="register" component={RegisterPage} />
+    </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const HomeStack = () => {
   return (
     <Stack.Navigator>
@@ -43,10 +63,11 @@ const HomeStack = () => {
   );
 }
 
-const SearchStack = () => {
+const ExploreStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="ExplorePage" component={Explore} />
+      <Stack.Screen options={{ headerShown: false }} name="ArticlePage" component={Article} />
     </Stack.Navigator>
   );
 }
@@ -68,12 +89,14 @@ const ProfileStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="ProfilePage" component={Profile} />
+      <Stack.Screen options={{ headerShown: false }} name="EditProfilePage" component={EditProfile} />
     </Stack.Navigator>
   );
 }
 
 const TabNavigator = () => {
   return (
+    <NavigationContainer>
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: colors.blue,
@@ -91,7 +114,7 @@ const TabNavigator = () => {
         tabBarIcon: ({color}) => (
           <AntDesign name="search1" size={32} color={color} />
         )
-      }} name="Explore" component={SearchStack} />
+      }} name="Explore" component={ExploreStack} />
       <Tab.Screen options={{ 
         headerShown: false,
         tabBarIcon: ({color}) => (
@@ -111,18 +134,15 @@ const TabNavigator = () => {
         )
       }} name="Profile" component={ProfileStack} />
     </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen options={{ headerShown: false }} name="TabNavigator" component={TabNavigator} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  const { user } = useAuth();
+
+  return user ? <TabNavigator/> : <AuthStack />;
 }
 
 const styles = StyleSheet.create({
