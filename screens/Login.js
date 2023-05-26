@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from 'react-native'
 import {auth} from '../database/firebase'
-import {signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {signInWithEmailAndPassword} from "firebase/auth";
 import colors from '../assets/colors';
 
 

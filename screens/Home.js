@@ -33,7 +33,7 @@ const Home = ({navigation}) => {
 
   const RenderArtikel = ({item}) => {
     return(
-      <TouchableOpacity style={styles.artikelContainer}>
+      <TouchableOpacity style={styles.artikelContainer} onPress={()=>navigation.navigate('Explore',{screen:'ArticlePage',params: {item:item}})}>
         <Image source={item.image} style={styles.artikelImage} resizeMode='stretch' />
         <View style={styles.artikelInfo}>
           <Text style={{color:"black"}}>{item.date}</Text>

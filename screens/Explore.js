@@ -49,6 +49,7 @@ const Explore = ({navigation}) => {
             onChangeText={setSearch}
           />
         </View>
+        <ScrollView horizontal={true}>
         <FlatList
             data={artikel}
             renderItem={Renderartikel}
@@ -56,6 +57,7 @@ const Explore = ({navigation}) => {
             vertical={true}
             style={styles.artikelList}
             />
+        </ScrollView>
     </View>
     </SafeAreaView>
     </ScrollView>
@@ -69,9 +71,9 @@ container: {
     backgroundColor: "white",
     height: 800,
     alignItems: 'left',
-    padding: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    padding: 10,
   },
 BigText: {
     fontSize: 24,
@@ -84,13 +86,6 @@ BigText: {
 header: {
     flexDirection: 'row',
     alignItems: 'center',
-},
-searchSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.lightgrey,
-    width: "100%",
-    borderRadius: 20,
 },
 searchSection: {
   flexDirection: 'row',
@@ -131,6 +126,6 @@ artikelLocation: {
 fontSize: 12,
 },
 artikelList: {
-alignSelf: 'center'
+marginTop: 10,
 },
 })

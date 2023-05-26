@@ -4,9 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../assets/colors';
 import {signOut } from "firebase/auth";
-import { auth } from '../database/firebase';
+import { auth, firestore} from '../database/firebase';
+import { doc,getDoc } from 'firebase/firestore';
 
 MaterialCommunityIcons.loadFont();
+
+const docRef = doc(firestore, "users", uid);
+const docSnap = await getDoc(docRef);
+console.log(docSnap) 
 
 const Profile = ({navigation}) => {
   const handleLogout = async () => {

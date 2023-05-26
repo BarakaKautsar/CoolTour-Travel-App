@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
-import {auth} from '../database/firebase'
-import {createUserWithEmailAndPassword} from "firebase/auth";
+import {auth, firestore} from '../database/firebase'
+import {createUserWithEmailAndPassword, uid} from "firebase/auth";
+import { doc, collection, setDoc } from "firebase/firestore"; 
 import colors from '../assets/colors';
 
 const RegisterPage = ({ navigation }) => {
@@ -18,19 +19,6 @@ const RegisterPage = ({ navigation }) => {
     error: ''
   })
 
-  // const handleRegister = () =>{
-  //   createUserWithEmailAndPassword(auth, email, password)
-  //   .then((userCredential) => {
-  //     const user = userCredential.user;
-  //     console.log('User account created & signed in!')
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //   });
-  //   // handle registration logic
-  // };
-
   async function handleRegister() {
     if (value.email === '' || value.password === '') {
       setValue({
@@ -42,7 +30,19 @@ const RegisterPage = ({ navigation }) => {
 
     try {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
-      navigation.navigate('Login');
+      try {
+        const user = auth.currentUser;
+        const uid = user.uid;
+        const docRef = await setDoc(doc(firestore,'users',uid), {
+          name: value.name,
+          email: value.email,
+          phoneNum: value.phoneNum,
+        });
+        navigation.navigate('Login');
+        console.log("Document written with ID: ", docRef.uid);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
     } catch (error) {
       setValue({
         ...value,
