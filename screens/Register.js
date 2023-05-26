@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import {auth, firestore} from '../database/firebase'
-import {createUserWithEmailAndPassword, uid} from "firebase/auth";
+import {createUserWithEmailAndPassword} from "firebase/auth";
 import { doc, collection, setDoc } from "firebase/firestore"; 
 import colors from '../assets/colors';
 
@@ -31,15 +31,15 @@ const RegisterPage = ({ navigation }) => {
     try {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
       try {
-        const user = auth.currentUser;
-        const uid = user.uid;
-        const docRef = await setDoc(doc(firestore,'users',uid), {
-          name: value.name,
-          email: value.email,
-          phoneNum: value.phoneNum,
-        });
+        if (auth.currentUser) {
+          const uid = auth.currentUser.uid;
+          const docRef = await setDoc(doc(firestore,'users',uid), {
+            name: value.name,
+            email: value.email,
+            phoneNum: value.phoneNum,
+          });
+        }
         navigation.navigate('Login');
-        console.log("Document written with ID: ", docRef.uid);
       } catch (e) {
         console.error("Error adding document: ", e);
       }

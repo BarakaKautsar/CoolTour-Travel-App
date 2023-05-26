@@ -1,25 +1,41 @@
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../assets/colors';
 import {signOut } from "firebase/auth";
 import { auth, firestore} from '../database/firebase';
-import { doc,getDoc } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 
 MaterialCommunityIcons.loadFont();
 
-const docRef = doc(firestore, "users", uid);
-const docSnap = await getDoc(docRef);
-console.log(docSnap) 
-
 const Profile = ({navigation}) => {
+  const [userDetails, setUserDetails] = useState({ name: '', email: '', phoneNum: '' });
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
+
+
   const handleLogout = async () => {
     await signOut(auth).then(() => {
       console.log('User signed out!')
     }).catch((error) => {
       // An error happened.
     });
+  };
+
+  const fetchUserDetails = async () => {
+    const user = auth.currentUser;
+    // const docRef = doc(firestore, "users", user.uid);
+    const docSnap = await getDoc(doc(firestore, "users", user.uid));
+    if (docSnap.exists) {
+      setUserDetails(docSnap.data());
+    }
+    else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
   };
 
   return (
@@ -29,9 +45,15 @@ const Profile = ({navigation}) => {
         <View style={{flexDirection: 'row', marginTop:10}}>
             <MaterialCommunityIcons name="account-circle" size={50} color={"white"} />
             <View style={{flexDirection: 'column'}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>Nama</Text>
-              <Text style={{color: 'white', fontSize: 15, marginLeft: 10}}>Email</Text>
-              <Text style={{color: 'white', fontSize: 15, marginLeft: 10}}>No. HP</Text>
+              <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
+                {userDetails.name}
+              </Text>
+              <Text style={{color: 'white', fontSize: 15, marginLeft: 10}}>
+                {userDetails.email}
+              </Text>
+              <Text style={{color: 'white', fontSize: 15, marginLeft: 10}}>
+                {userDetails.phoneNum}
+              </Text>
             </View>
         </View>
     </View>

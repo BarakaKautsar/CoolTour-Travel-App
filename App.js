@@ -26,6 +26,8 @@ import EditProfile from './screens/EditProfile.js';
 import History from './screens/History.js';
 
 import Plan from './screens/Plan.js';
+import ItineraryPage from './screens/ItineraryPage';
+
 import colors from './assets/colors.js';
 
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -75,6 +77,7 @@ const PlanStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="PlanPage" component={Plan} />
+      <Stack.Screen options={{ headerShown: false }} name="ItineraryPage" component={ItineraryPage} />
     </Stack.Navigator>
   );
 }
