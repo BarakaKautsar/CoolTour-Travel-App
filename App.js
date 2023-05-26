@@ -16,6 +16,8 @@ import Home from './screens/Home.js';
 import TicketSearch from './screens/TicketSearch.js';
 import TourSearch from './screens/TourSearch.js';
 import StaySearch from './screens/StaySearch.js';
+import Payment from './screens/Payment';
+import PaymentComplete from './screens/PaymentComplete.js';
 
 import Explore from './screens/Explore.js';
 import Article from './screens/Article.js';
@@ -61,6 +63,8 @@ const HomeStack = () => {
       <Stack.Screen options={{ headerShown: false }} name="TicketSearchPage" component={TicketSearch} />
       <Stack.Screen options={{ headerShown: false }} name="TourSearchPage" component={TourSearch} />
       <Stack.Screen options={{ headerShown: false }} name="StaySearchPage" component={StaySearch} />
+      <Stack.Screen options={{ headerShown: false }} name="PaymentPage" component={Payment} />
+      <Stack.Screen options={{ headerShown: false }} name="PaymentCompletePage" component={PaymentComplete} />
     </Stack.Navigator>
   );
 }

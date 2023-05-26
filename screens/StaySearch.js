@@ -14,7 +14,7 @@ const StaySearch = ({navigation}) => {
 
     const Renderstay = ({item}) => {
       return(
-        <TouchableOpacity style={styles.stayContainer}>
+        <TouchableOpacity style={styles.stayContainer} onPress={()=>navigation.navigate("PaymentPage",{item:item})}>
           <Image source={item.image} style={styles.stayImage} />
           <Text style={styles.stayName}>{item.name}</Text>
           <View style={{flexDirection:'row', justifyContent:'space-between', padding:5}}>

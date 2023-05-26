@@ -17,7 +17,7 @@ const TourSearch = ({navigation}) => {
 
     const Rendertour = ({item}) => {
       return(
-        <TouchableOpacity style={styles.tourContainer}>
+        <TouchableOpacity style={styles.tourContainer} onPress={()=>navigation.navigate("PaymentPage",{item:item})}>
           <Image source={item.image} style={styles.tourImage} />
           <Text style={styles.tourName}>{item.name}</Text>
           <View style={{flexDirection:'row', justifyContent:'space-between', padding:5}}>

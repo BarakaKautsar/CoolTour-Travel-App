@@ -17,7 +17,7 @@ const TicketSearch = ({navigation}) => {
 
     const RenderTiket = ({item}) => {
         return(
-          <TouchableOpacity style={styles.tiketContainer}>
+          <TouchableOpacity style={styles.tiketContainer} onPress={()=>navigation.navigate("PaymentPage",{item:item})}>
             <Image source={item.image} style={styles.tiketImage} />
             <Text style={styles.tiketName}>{item.name}</Text>
             <View style={{flexDirection:'row', justifyContent:'space-between', padding:5}}>
